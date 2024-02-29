@@ -114,7 +114,6 @@ export default function DataTable<D extends object>({
   const globalControlRef = useRef<HTMLDivElement>(null);
   const paginationRef = useRef<HTMLDivElement>(null);
   const wrapperRef = userWrapperRef || defaultWrapperRef;
-  const paginationData = JSON.stringify(serverPaginationData);
 
   const defaultGetTableSize = useCallback(() => {
     if (wrapperRef.current) {
@@ -128,17 +127,7 @@ export default function DataTable<D extends object>({
       return { width, height };
     }
     return undefined;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    initialHeight,
-    initialWidth,
-    wrapperRef,
-    hasPagination,
-    hasGlobalControl,
-    paginationRef,
-    resultsSize,
-    paginationData,
-  ]);
+  }, [initialHeight, initialWidth, wrapperRef, paginationRef]);
 
   const defaultGlobalFilter: FilterType<D> = useCallback(
     (rows: Row<D>[], columnIds: IdType<D>[], filterValue: string) => {
@@ -194,13 +183,7 @@ export default function DataTable<D extends object>({
       ? noResultsText(filterValue as string)
       : noResultsText;
 
-  const getNoResults = () => <div className="dt-no-results">{noResults}</div>;
-
-  if (!columns || columns.length === 0) {
-    return (
-      wrapStickyTable ? wrapStickyTable(getNoResults) : getNoResults()
-    ) as JSX.Element;
-  }
+  const getNoResult = () => <div className="dt-no-results">{noResults}</div>;
 
   const shouldRenderFooter = columns.some(x => !!x.Footer);
 
@@ -297,6 +280,9 @@ export default function DataTable<D extends object>({
     resultOnPageChange = (pageNumber: number) =>
       onServerPaginationChange(pageNumber, serverPageSize);
   }
+
+  const isNoResult = !columns || columns.length === 0;
+
   return (
     <div
       ref={wrapperRef}
@@ -335,7 +321,11 @@ export default function DataTable<D extends object>({
           </div>
         </div>
       ) : null}
-      {wrapStickyTable ? wrapStickyTable(renderTable) : renderTable()}
+      {wrapStickyTable
+        ? wrapStickyTable(isNoResult ? getNoResult : renderTable)
+        : isNoResult
+        ? getNoResult()
+        : renderTable()}
       {hasPagination && resultPageCount > 1 ? (
         <SimplePagination
           ref={paginationRef}

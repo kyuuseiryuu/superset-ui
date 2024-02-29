@@ -189,7 +189,7 @@ export default function TableChart<D extends DataRecord = DataRecord>(
     sticky = true, // whether to use sticky header
     columnColorFormatters,
   } = props;
-  const timestampFormatter = useCallback(
+  const timestampFormatter = useCallback<(v: any) => any>(
     value => getTimeFormatterForGranularity(timeGrain)(value),
     [timeGrain],
   );
