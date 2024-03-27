@@ -39,7 +39,7 @@
     "ci:release-from-tag": "npm run clean-npm-lock && lerna publish from-package --yes",
     "ci:release-conventional": "npm run clean-npm-lock && lerna publish --conventional-commits --create-release github --yes"
   },
-  "repository": "https://git.kysr.me/kyuuseiryuu/superset-ui",
+  "repository": "https://github.com/kyuuseiryuu/superset-ui",
   "keywords": [
     "apache",
     "superset",

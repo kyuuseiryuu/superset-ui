@@ -61,13 +61,13 @@ jobs:
 
       - name: Configure npm and git
         run: |
-          echo "@superset-ui:registry=https://registry.npmjs.org/" > .npmrc
-          echo "registry=https://registry.npmjs.org/" >> .npmrc
-          echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" >> $HOME/.npmrc 2> /dev/null
+          echo "@superset-ui:registry=https://npm.kysr.me/" > .npmrc
+          echo "registry=https://npm.kysr.me/" >> .npmrc
+          echo "//npm.kysr.me/:_authToken=\${NPM_TOKEN}" >> $HOME/.npmrc 2> /dev/null
           npm whoami
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git remote set-url origin "https://${GITHUB_TOKEN}@github.com/apache-superset/superset-ui.git" > /dev/null 2>&1
+          git remote set-url origin "https://${GITHUB_TOKEN}@github.com/kyuuseiryuu/superset-ui.git" > /dev/null 2>&1
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
